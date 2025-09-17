@@ -21,6 +21,8 @@ def create_app(config_name):
     db.init_app(app)
     login_manager.init_app(app)
 
+    from . import models
+
     @login_manager.user_loader
     def load_user(user_id):
         from .models.user import User
