@@ -1,7 +1,16 @@
+# Core Flask
 Flask
 python-dotenv
 Werkzeug
 
+# Database ORM & Migration
 Flask-SQLAlchemy
 Flask-Migrate
 SQLAlchemy
+
+# Forms
+Flask-WTF
+email-validator
+
+# User Session Management
+Flask-Login

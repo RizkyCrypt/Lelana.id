@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Lelana.id{% endblock %}</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        .flash { background: #cee5f5; padding: 0.5em; border: 1px solid #aacbe2; margin-bottom: 1em; }
+        .form-field { margin-bottom: 1em; }
+        .error { color: red; font-size: 0.8em; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="{{ url_for('main.index') }}">Home</a> |
+            {% if current_user.is_authenticated %}
+                <!-- Tampilkan ini jika user sudah login -->
+                <a href="{{ url_for('main.profile') }}">Profil</a> |
+                <a href="{{ url_for('auth.logout') }}">Logout</a>
+            {% else %}
+                <!-- Tampilkan ini jika user belum login -->
+                <a href="{{ url_for('auth.login') }}">Login</a> |
+                <a href="{{ url_for('auth.register') }}">Register</a>
+            {% endif %}
+        </nav>
+        <hr>
+    </header>
+
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+</body>
+</html>
