@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from .models.user import User
 
@@ -44,3 +44,18 @@ class LoginForm(FlaskForm):
                             validators=[DataRequired(message='Password wajib diisi.')])
     remember = BooleanField('Ingat Saya')
     submit = SubmitField('Login')
+
+class WisataForm(FlaskForm):
+    """
+    Formulir untuk menambah atau mengedit data wisata.
+    """
+    nama = StringField('Nama Wisata',
+                    validators=[DataRequired(message='Nama wisata wajib diisi.')])
+    kategori = StringField('Kategori',
+                        validators=[DataRequired(message='Kategori wajib diisi.')])
+    lokasi = StringField('Lokasi (Alamat/Koordinat)',
+                    validators=[DataRequired(message='Lokasi wajib diisi.')])
+    deskripsi = TextAreaField('Deskripsi', 
+                        validators=[DataRequired(message='Deskripsi wajib diisi.')])
+    gambar_url = StringField('URL Gambar (Opsional)')
+    submit = SubmitField('Simpan')

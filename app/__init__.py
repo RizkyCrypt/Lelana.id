@@ -34,4 +34,7 @@ def create_app(config_name):
     from .routes.auth_routes import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
+    from .routes.wisata_routes import wisata as wisata_blueprint
+    app.register_blueprint(wisata_blueprint)
+
     return app

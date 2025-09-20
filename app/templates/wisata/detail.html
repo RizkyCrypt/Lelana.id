@@ -1,0 +1,29 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}{{ wisata.nama }} - Lelana.id{% endblock %}
+
+{% block content %}
+    <style>
+        .detail-container { border: 1px solid #ddd; padding: 20px; border-radius: 8px; }
+        .detail-image { max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 20px; }
+    </style>
+
+    <div class="detail-container">
+        <h2>{{ wisata.nama }}</h2>
+        
+        {% if wisata.gambar_url %}
+            <img src="{{ wisata.gambar_url }}" alt="Gambar {{ wisata.nama }}" class="detail-image" onerror="this.style.display='none'">
+        {% endif %}
+
+        <p><strong>Kategori:</strong> {{ wisata.kategori }}</p>
+        <p><strong>Lokasi:</strong> {{ wisata.lokasi }}</p>
+        <hr>
+        <p>{{ wisata.deskripsi|safe }}</p> {# |safe digunakan jika deskripsi mengandung HTML #}
+        <hr>
+        <small>Data dibuat pada: {{ wisata.tanggal_dibuat.strftime('%d %B %Y') }}</small>
+    </div>
+
+    <p style="margin-top: 20px;">
+        <a href="{{ url_for('wisata.list_wisata') }}">&laquo; Kembali ke Daftar Wisata</a>
+    </p>
+{% endblock %}
