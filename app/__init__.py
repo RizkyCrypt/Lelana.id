@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
@@ -39,5 +39,15 @@ def create_app(config_name):
 
     from .routes.event_routes import event as event_blueprint
     app.register_blueprint(event_blueprint)
+
+    @app.errorhandler(404)
+    def page_not_found(e):
+        """Menangani error 404 (Halaman Tidak Ditemukan)."""
+        return render_template('errors/404.html'), 404
+
+    @app.errorhandler(500)
+    def internal_server_error(e):
+        """Menangani error 500 (Kesalahan Internal Server)."""
+        return render_template('errors/500.html'), 500
 
     return app

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, abort
+from flask import Blueprint, render_template, redirect, url_for, flash, abort, request
 from flask_login import login_required, current_user
 from app import db
 from app.models.wisata import Wisata
@@ -10,11 +10,18 @@ wisata = Blueprint('wisata', __name__)
 @wisata.route('/wisata')
 def list_wisata():
     """
-    Rute untuk menampilkan daftar semua destinasi wisata.
+    Rute untuk menampilkan daftar semua destinasi wisata dengan paginasi.
     """
-    semua_wisata = Wisata.query.order_by(Wisata.nama).all()
-    
-    return render_template('wisata/list.html', daftar_wisata=semua_wisata)
+    page = request.args.get('page', 1, type=int)
+
+    pagination = Wisata.query.order_by(Wisata.nama).paginate(
+        page=page, per_page=5, error_out=False
+    )
+    daftar_wisata_halaman_ini = pagination.items
+
+    return render_template('wisata/list.html', 
+                            daftar_wisata=daftar_wisata_halaman_ini,
+                            pagination=pagination)
 
 @wisata.route('/wisata/detail/<int:id>')
 def detail_wisata(id):

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required
 from app import db
 from app.models.event import Event
@@ -10,12 +10,17 @@ event = Blueprint('event', __name__)
 @event.route('/event')
 def list_event():
     """
-    Rute untuk menampilkan daftar semua event atau acara lokal.
-    Diurutkan berdasarkan tanggal pelaksanaan terbaru.
+    Rute untuk menampilkan daftar semua event dengan paginasi.
     """
-    semua_event = Event.query.order_by(Event.tanggal.desc()).all()
+    page = request.args.get('page', 1, type=int)
+    pagination = Event.query.order_by(Event.tanggal.desc()).paginate(
+        page=page, per_page=5, error_out=False
+    )
+    daftar_event_halaman_ini = pagination.items
 
-    return render_template('event/list.html', daftar_event=semua_event)
+    return render_template('event/list.html', 
+                            daftar_event=daftar_event_halaman_ini,
+                            pagination=pagination)
 
 @event.route('/event/detail/<int:id>')
 def detail_event(id):
