@@ -1,6 +1,14 @@
 import os
+from dotenv import load_dotenv
+
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path)
+
 from app import create_app, db
 from app.models.user import User
+from app.models.wisata import Wisata
+from app.models.event import Event
 from flask_migrate import Migrate
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
@@ -13,4 +21,4 @@ def make_shell_context():
     Ini memudahkan pengujian dan interaksi dengan komponen aplikasi
     melalui command line.
     """
-    return dict(db=db, User=User)
+    return dict(db=db, User=User, Wisata=Wisata, Event=Event)
