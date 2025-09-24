@@ -37,4 +37,7 @@ def create_app(config_name):
     from .routes.wisata_routes import wisata as wisata_blueprint
     app.register_blueprint(wisata_blueprint)
 
+    from .routes.event_routes import event as event_blueprint
+    app.register_blueprint(event_blueprint)
+
     return app

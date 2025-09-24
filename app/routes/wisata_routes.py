@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash, abort
 from flask_login import login_required, current_user
 from app import db
 from app.models.wisata import Wisata
-from app.form import WisataForm
+from app.forms import WisataForm
 from app.utils.decorators import admin_required
 
 wisata = Blueprint('wisata', __name__)
