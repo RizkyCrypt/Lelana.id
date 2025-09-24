@@ -14,6 +14,9 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     role = db.Column(db.String(10), default='user', nullable=False) # Bisa 'user' atau 'admin'
 
+    # Relasi ke Review: Satu user bisa punya banyak review
+    reviews = db.relationship('Review', backref='author', lazy='dynamic')
+
     @property
     def password(self):
         """

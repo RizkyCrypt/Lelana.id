@@ -2,7 +2,8 @@ from flask import Blueprint, render_template, redirect, url_for, flash, abort, r
 from flask_login import login_required, current_user
 from app import db
 from app.models.wisata import Wisata
-from app.forms import WisataForm
+from app.models.review import Review
+from app.forms import WisataForm, ReviewForm
 from app.utils.decorators import admin_required
 
 wisata = Blueprint('wisata', __name__)
@@ -23,14 +24,31 @@ def list_wisata():
                             daftar_wisata=daftar_wisata_halaman_ini,
                             pagination=pagination)
 
-@wisata.route('/wisata/detail/<int:id>')
+@wisata.route('/wisata/detail/<int:id>', methods=['GET', 'POST'])
 def detail_wisata(id):
     """
-    Rute untuk menampilkan detail satu destinasi wisata.
+    Rute untuk menampilkan detail wisata, daftar review, dan form untuk menambah review.
     """
     w = Wisata.query.get_or_404(id) # Mengambi data wisata berdasarkan ID, jika tidak ada akan menampilkan error 404
+    form = ReviewForm()
 
-    return render_template('wisata/detail.html', wisata=w)
+    if form.validate_on_submit() and current_user.is_authenticated:
+        review_baru = Review(
+            rating=form.rating.data,
+            komentar=form.komentar.data,
+            author=current_user,
+            wisata_reviewed=w
+        )
+
+        db.session.add(review_baru)
+        db.session.commit()
+
+        flash('Terima kasih! Review Anda telah ditambahkan.', 'success')
+        return redirect(url_for('wisata.detail_wisata', id=w.id))
+    
+    semua_review = w.reviews.order_by(Review.tanggal_dibuat.desc()).all()
+
+    return render_template('wisata/detail.html', wisata=w, reviews=semua_review, form=form)
 
 @wisata.route('/wisata/tambah', methods=['GET', 'POST'])
 @login_required

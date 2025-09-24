@@ -23,6 +23,48 @@
         <small>Data dibuat pada: {{ wisata.tanggal_dibuat.strftime('%d %B %Y') }}</small>
     </div>
 
+    <hr style="margin: 30px 0;">
+
+    <div class="review-section">
+        <h3>Ulasan Pengunjung</h3>
+
+        {% if current_user.is_authenticated %}
+            <form method="POST" novalidate style="margin-bottom: 20px; border: 1px solid #ddd; padding: 15px; border-radius: 5px;">
+                {{ form.hidden_tag() }}
+                <h4>Tulis Ulasan Anda</h4>
+                <div>
+                    {{ form.rating.label }}<br>
+                    {{ form.rating(type='number', min='1', max='5') }}
+                    {% for error in form.rating.errors %}
+                        <span style="color: red; font-size: 0.9em;">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div style="margin-top: 10px;">
+                    {{ form.komentar.label }}<br>
+                    {{ form.komentar(rows=4, style="width: 100%;") }}
+                    {% for error in form.komentar.errors %}
+                        <span style="color: red; font-size: 0.9em;">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div style="margin-top: 10px;">
+                    {{ form.submit() }}
+                </div>
+            </form>
+        {% else %}
+            <p><a href="{{ url_for('auth.login') }}">Login</a> untuk menulis ulasan.</p>
+        {% endif %}
+    
+        {% for review in reviews %}
+            <div class="review-item" style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">
+                <p><strong>{{ review.author.username }}</strong> - Rating: {{ review.rating }}/5</p>
+                <p>{{ review.komentar }}</p>
+                <small>Ditulis pada: {{ review.tanggal_dibuat.strftime('%d %B %Y') }}</small>
+            </div>
+        {% else %}
+            <p>Belum ada ulasan untuk destinasi ini. Jadilah yang pertama!</p>
+        {% endfor %}
+    </div>
+
     <p style="margin-top: 20px;">
         <a href="{{ url_for('wisata.list_wisata') }}">&laquo; Kembali ke Daftar Wisata</a>
     </p>

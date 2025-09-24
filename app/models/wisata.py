@@ -15,5 +15,8 @@ class Wisata(db.Model):
     gambar_url = db.Column(db.String(255), nullable=True)
     tanggal_dibuat = db.Column(db.DateTime, default=datetime.utcnow)
 
+    # Relasi ke Review: Satu wisata bisa punya banyak review
+    reviews = db.relationship('Review', backref='wisata_reviewed', lazy='dynamic')
+
     def __repr__(self):
         return f'<Wisata {self.nama}>'
