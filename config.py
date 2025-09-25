@@ -15,6 +15,9 @@ class Config:
         'sqlite:///' + os.path.join(basedir, 'lelana.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    UPLOAD_FOLDER = os.path.join(basedir, 'app/static/uploads')
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
 class DevelopmentConfig(Config):
     """
     Konfigurasi untuk lingkungan pengembangan (development).

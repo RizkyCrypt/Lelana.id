@@ -26,10 +26,10 @@
     <hr style="margin: 30px 0;">
 
     <div class="review-section">
-        <h3>Ulasan Pengunjung</h3>
+        <h3>Ulasan Petualang</h3>
 
         {% if current_user.is_authenticated %}
-            <form method="POST" novalidate style="margin-bottom: 20px; border: 1px solid #ddd; padding: 15px; border-radius: 5px;">
+            <form method="POST" novalidate enctype="multipart/form-data" style="margin-bottom: 20px; border: 1px solid #ddd; padding: 15px; border-radius: 5px;">
                 {{ form.hidden_tag() }}
                 <h4>Tulis Ulasan Anda</h4>
                 <div>
@@ -47,6 +47,13 @@
                     {% endfor %}
                 </div>
                 <div style="margin-top: 10px;">
+                    {{ form.foto.label }}<br>
+                    {{ form.foto() }}
+                    {% for error in form.foto.errors %}
+                        <span style="color: red; font-size: 0.9em;">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div style="margin-top: 10px;">
                     {{ form.submit() }}
                 </div>
             </form>
@@ -58,6 +65,13 @@
             <div class="review-item" style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">
                 <p><strong>{{ review.author.username }}</strong> - Rating: {{ review.rating }}/5</p>
                 <p>{{ review.komentar }}</p>
+
+                <div class="review-gallery" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
+                    {% for foto in review.foto %}
+                        <img src="{{ url_for('static', filename='uploads/' + foto.nama_file) }}" alt="Foto ulasan dari {{ review.author.username }}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;">
+                    {% endfor %}
+                </div>
+                
                 <small>Ditulis pada: {{ review.tanggal_dibuat.strftime('%d %B %Y') }}</small>
             </div>
         {% else %}

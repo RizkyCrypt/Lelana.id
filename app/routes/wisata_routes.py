@@ -3,8 +3,10 @@ from flask_login import login_required, current_user
 from app import db
 from app.models.wisata import Wisata
 from app.models.review import Review
+from app.models.foto_ulasan import FotoUlasan
 from app.forms import WisataForm, ReviewForm
 from app.utils.decorators import admin_required
+from app.services.file_handler import save_pictures
 
 wisata = Blueprint('wisata', __name__)
 
@@ -39,10 +41,21 @@ def detail_wisata(id):
             author=current_user,
             wisata_reviewed=w
         )
-
         db.session.add(review_baru)
-        db.session.commit()
 
+        if form.foto.data:
+            if form.foto.data[0].filename:
+                try:
+                    filenames = save_pictures(form.foto.data)
+                    for filename in filenames:
+                        foto_baru = FotoUlasan(nama_file=filename, review=review_baru)
+                        db.session.add(foto_baru)
+                except Exception as e:
+                    flash(f'Terjadi kesalahan saat mengunggah gambar: {e}', 'danger')
+                    db.session.rollback()
+                    return redirect(url_for('wisata.detail_wisata', id=w.id))
+
+        db.session.commit()
         flash('Terima kasih! Review Anda telah ditambahkan.', 'success')
         return redirect(url_for('wisata.detail_wisata', id=w.id))
     

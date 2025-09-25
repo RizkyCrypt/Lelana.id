@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, DateField, IntegerField, FloatField, widgets
+from flask_wtf.file import FileAllowed
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, DateField, IntegerField, FloatField, widgets, MultipleFileField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, NumberRange
 from .models.user import User
 from wtforms_sqlalchemy.fields import QuerySelectMultipleField
@@ -83,12 +84,14 @@ class EventForm(FlaskForm):
 
 class ReviewForm(FlaskForm):
     """
-    Formulir untuk mengirimkan review.
+    Formulir untuk mengirimkan review, kini dengan fungsionalitas unggah foto.
     """
     rating = IntegerField('Rating (1-5)', 
                           validators=[DataRequired(), NumberRange(min=1, max=5, message='Rating harus antara 1 dan 5.')])
     komentar = TextAreaField('Komentar Anda', 
                              validators=[DataRequired(message='Komentar tidak boleh kosong.')])
+    foto = MultipleFileField('Unggah Foto (Opsional)', 
+                             validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Hanya gambar (jpg, png, jpeg) yang diizinkan!')])
     submit = SubmitField('Kirim Review')
 
 def get_all_wisata():
