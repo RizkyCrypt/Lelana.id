@@ -16,6 +16,9 @@
     <header>
         <nav>
             <a href="{{ url_for('main.index') }}">Home</a> |
+            <a href="{{ url_for('wisata.list_wisata') }}">Wisata</a> |
+            <a href="{{ url_for('event.list_event') }}">Event</a> |
+            <a href="{{ url_for('paket_wisata.list_paket') }}">Paket Wisata</a> |
             {% if current_user.is_authenticated %}
                 <!-- Tampilkan ini jika user sudah login -->
                 <a href="{{ url_for('main.profile') }}">Profil</a> |

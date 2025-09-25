@@ -40,6 +40,9 @@ def create_app(config_name):
     from .routes.event_routes import event as event_blueprint
     app.register_blueprint(event_blueprint)
 
+    from .routes.paket_wisata_routes import paket_wisata as paket_wisata_blueprint
+    app.register_blueprint(paket_wisata_blueprint)
+
     @app.errorhandler(404)
     def page_not_found(e):
         """Menangani error 404 (Halaman Tidak Ditemukan)."""
