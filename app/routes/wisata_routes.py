@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, abort, request
+from flask import Blueprint, render_template, redirect, url_for, flash, abort, request, jsonify
 from flask_login import login_required, current_user
 from app import db
 from app.models.wisata import Wisata
@@ -65,7 +65,9 @@ def tambah_wisata():
             kategori=form.kategori.data,
             lokasi=form.lokasi.data,
             deskripsi=form.deskripsi.data,
-            gambar_url=form.gambar_url.data
+            gambar_url=form.gambar_url.data,
+            latitude=form.latitude.data,
+            longitude=form.longitude.data
         )
         db.session.add(wisata_baru)
         db.session.commit()
@@ -91,6 +93,8 @@ def edit_wisata(id):
         wisata_item.lokasi = form.lokasi.data
         wisata_item.deskripsi = form.deskripsi.data
         wisata_item.gambar_url = form.gambar_url.data
+        wisata_item.latitude = form.latitude.data
+        wisata_item.longitude = form.longitude.data
         db.session.commit()
 
         flash('Data wisata berhasil diperbarui!', 'success')
@@ -112,3 +116,20 @@ def hapus_wisata(id):
 
     flash('Data wisata telah berhasil dihapus.', 'info')
     return redirect(url_for('wisata.list_wisata'))
+
+@wisata.route('/api/wisata/lokasi')
+def api_lokasi_wisata():
+    """
+    API endpoint untuk menyediakan data lokasi semua wisata dalam format JSON.
+    """
+    semua_wisata = Wisata.query.filter(Wisata.latitude.isnot(None), Wisata.longitude.isnot(None)).all()
+
+    daftar_lokasi = []
+    for w in semua_wisata:
+        daftar_lokasi.append({
+            'nama': w.nama,
+            'lat': w.latitude,
+            'lon': w.longitude,
+            'detail_url': url_for('wisata.detail_wisata', id=w.id, _external=True)
+        })
+        return jsonify(daftar_lokasi)

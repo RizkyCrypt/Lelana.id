@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, DateField, IntegerField, widgets
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, DateField, IntegerField, FloatField, widgets
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, NumberRange
 from .models.user import User
 from wtforms_sqlalchemy.fields import QuerySelectMultipleField
@@ -60,6 +60,10 @@ class WisataForm(FlaskForm):
     deskripsi = TextAreaField('Deskripsi', 
                               validators=[DataRequired(message='Deskripsi wajib diisi.')])
     gambar_url = StringField('URL Gambar (Opsional)')
+
+    latitude = FloatField('Latitude (Contoh: -7.421... Opsional)')
+    longitude = FloatField('Longitude (Contoh: 109.243 Opsional)')
+
     submit = SubmitField('Simpan')
 
 class EventForm(FlaskForm):

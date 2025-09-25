@@ -44,8 +44,19 @@
             {{ form.gambar_url(size=50) }}
         </div>
         
-        <div class="form-field">
-            {{ form.submit() }}
+        <div class="form-group">
+            {{ form.latitude.label }}
+            {{ form.latitude(type='number', step='any') }}
+            {% for error in form.latitude.errors %}<span class="error-message">{{ error }}</span>{% endfor %}
+        </div>
+        <div class="form-group">
+            {{ form.longitude.label }}
+            {{ form.longitude(type='number', step='any') }}
+            {% for error in form.longitude.errors %}<span class="error-message">{{ error }}</span>{% endfor %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.submit(class="form-submit") }}
         </div>
     </form>
 {% endblock %}

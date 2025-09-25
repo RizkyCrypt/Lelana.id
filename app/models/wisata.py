@@ -13,6 +13,10 @@ class Wisata(db.Model):
     lokasi = db.Column(db.String(200), nullable=False)
     deskripsi = db.Column(db.Text, nullable=False)
     gambar_url = db.Column(db.String(255), nullable=True)
+
+    latitude = db.Column(db.Float, nullable=True)
+    longitude = db.Column(db.Float, nullable=True)
+
     tanggal_dibuat = db.Column(db.DateTime, default=datetime.utcnow)
 
     # Relasi ke Review: Satu wisata bisa punya banyak review

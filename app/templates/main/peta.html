@@ -1,0 +1,37 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Peta Wisata - Lelana.id{% endblock %}
+
+{% block content %}
+    <h2>Peta Interaktif Destinasi Wisata</h2>
+    <p>Temukan lokasi semua destinasi wisata di Banyumas dan sekitarnya.</p>
+    
+    <!-- Elemen div ini akan menjadi wadah peta -->
+    <div id="map"></div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Inisialisasi peta dan pusatkan di sekitar Banyumas
+    const map = L.map('map').setView([-7.4313, 109.2443], 11);
+
+    // Tambahkan layer tile dari OpenStreetMap
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    // Ambil data lokasi dari API endpoint kita
+    fetch('{{ url_for("wisata.api_lokasi_wisata") }}')
+        .then(response => response.json())
+        .then(data => {
+            // Loop melalui setiap lokasi dan tambahkan marker ke peta
+            data.forEach(lokasi => {
+                const marker = L.marker([lokasi.lat, lokasi.lon]).addTo(map);
+                // Tambahkan popup yang muncul saat marker diklik
+                marker.bindPopup(`<b><a href="${lokasi.detail_url}">${lokasi.nama}</a></b>`);
+            });
+        })
+        .catch(error => console.error('Error mengambil data lokasi:', error));
+</script>
+{% endblock %}

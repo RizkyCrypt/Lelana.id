@@ -18,3 +18,10 @@ def profile():
     Hanya bisa diakses jika pengguna sudah login.
     """
     return render_template('main/profile.html', user=current_user)
+
+@main.route('/peta-wisata')
+def peta_wisata():
+    """
+    Rute untuk menampilkan halaman peta interaktif.
+    """
+    return render_template('main/peta.html')
