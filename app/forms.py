@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, DateField, IntegerField, FloatField, widgets, MultipleFileField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, NumberRange
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, NumberRange, Optional
 from .models.user import User
 from wtforms_sqlalchemy.fields import QuerySelectMultipleField
 from .models.wisata import Wisata
@@ -62,8 +62,10 @@ class WisataForm(FlaskForm):
                               validators=[DataRequired(message='Deskripsi wajib diisi.')])
     gambar_url = StringField('URL Gambar (Opsional)')
 
-    latitude = FloatField('Latitude (Contoh: -7.421... Opsional)')
-    longitude = FloatField('Longitude (Contoh: 109.243 Opsional)')
+    latitude = FloatField('Latitude (Contoh: -7.421... Opsional)',
+                          validators=[Optional()])
+    longitude = FloatField('Longitude (Contoh: 109.243 Opsional)',
+                           validators=[Optional()])
 
     submit = SubmitField('Simpan')
 
@@ -95,8 +97,8 @@ class ReviewForm(FlaskForm):
     submit = SubmitField('Kirim Review')
 
 def get_all_wisata():
-    """Fungsi helper untuk query semua data wisata."""
-    return Wisata.query.all()
+    """Fungsi helper untuk query semua data wisata, diurutkan berdasarkan nama."""
+    return Wisata.query.order_by(Wisata.nama).all()
 
 class PaketWisataForm(FlaskForm):
     """
@@ -117,3 +119,20 @@ class PaketWisataForm(FlaskForm):
         option_widget=widgets.CheckboxInput()
     )
     submit = SubmitField('Simpan Paket Wisata')
+
+class ItinerariForm(FlaskForm):
+    """
+    Formulir untuk membuat atau mengedit Itinerari Petualangan.
+    """
+    judul = StringField('Judul Itinerari', 
+                        validators=[DataRequired(message='Judul wajib diisi.')])
+    deskripsi = TextAreaField('Cerita atau Deskripsi Singkat (Opsional)')
+
+    wisata_termasuk = QuerySelectMultipleField(
+        'Pilih Tempat Wisata untuk Dimasukkan',
+        query_factory=get_all_wisata,
+        get_label='nama',
+        widget=widgets.ListWidget(prefix_label=False),
+        option_widget=widgets.CheckboxInput()
+    )
+    submit = SubmitField('Simpan Itinerari')

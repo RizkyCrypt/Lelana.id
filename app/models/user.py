@@ -17,6 +17,9 @@ class User(UserMixin, db.Model):
     # Relasi ke Review: Satu user bisa punya banyak review
     reviews = db.relationship('Review', backref='author', lazy='dynamic')
 
+    # Relasi ke Itinerari: Satu user bisa membuat banyak itinerari
+    itinerari = db.relationship('Itinerari', backref='penulis', lazy='dynamic')
+
     @property
     def password(self):
         """
