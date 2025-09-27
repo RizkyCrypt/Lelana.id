@@ -46,6 +46,9 @@ def create_app(config_name):
     from .routes.itinerari_routes import itinerari as itinerari_blueprint
     app.register_blueprint(itinerari_blueprint)
 
+    from .routes.admin_routes import admin as admin_blueprint
+    app.register_blueprint(admin_blueprint)
+
     @app.errorhandler(404)
     def page_not_found(e):
         """Menangani error 404 (Halaman Tidak Ditemukan)."""

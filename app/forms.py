@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, DateField, IntegerField, FloatField, widgets, MultipleFileField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, DateField, IntegerField, FloatField, widgets, MultipleFileField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, NumberRange, Optional
 from .models.user import User
 from wtforms_sqlalchemy.fields import QuerySelectMultipleField
@@ -136,3 +136,36 @@ class ItinerariForm(FlaskForm):
         option_widget=widgets.CheckboxInput()
     )
     submit = SubmitField('Simpan Itinerari')
+
+class AdminEditUserForm(FlaskForm):
+    """
+    Formulir untuk admin mengedit data pengguna.
+    """
+    username = StringField('Username', 
+                           validators=[DataRequired(message='Username wajib diisi.'),
+                                       Length(min=4, max=25)])
+    email = StringField('Email', 
+                        validators=[DataRequired(message='Email wajib diisi.'),
+                                    Email(message='Format email tidak valid.')])
+    role = SelectField('Peran (Role)', 
+                       choices=[('user', 'User'), ('admin', 'Admin')],
+                                validators=[DataRequired()])
+    submit = SubmitField('Simpan Perubahan')
+
+    def __init__(self, original_user, *args, **kwargs):
+        super(AdminEditUserForm, self).__init__(*args, **kwargs)
+        self.original_user = original_user
+
+    def validate_username(self, username):
+        """Memvalidasi username hanya jika diubah dan sudah ada."""
+        if username.data != self.original_user.username:
+            user = User.query.filter_by(username=username.data).first()
+            if user:
+                raise ValidationError('Username tersebut sudah digunakan.')
+
+    def validate_email(self, email):
+        """Memvalidasi email hanya jika diubah dan sudah ada."""
+        if email.data != self.original_user.email:
+            user = User.query.filter_by(email=email.data).first()
+            if user:
+                raise ValidationError('Email tersebut sudah terdaftar.')

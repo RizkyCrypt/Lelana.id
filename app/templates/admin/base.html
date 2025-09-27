@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dashboard Admin{% endblock %} - Lelana.id</title>
+</head>
+<body>
+    <header>
+        <h1>Lelana.id - Panel Admin</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('admin.dashboard') }}">Dashboard Utama</a></li>
+                <li><a href="{{ url_for('admin.manage_users') }}">Manajemen Pengguna</a></li>
+                <li><a href="{{ url_for('admin.manage_wisata') }}">Manajemen Wisata</a></li>
+                <li><a href="{{ url_for('admin.manage_event') }}">Manajemen Event</a></li>
+                <li><a href="{{ url_for('admin.manage_paket_wisata') }}">Manajemen Paket Wisata</a></li>
+                <li><a href="{{ url_for('main.index') }}">Kembali ke Situs Publik</a></li>
+            </ul>
+        </nav>
+    </header>
+    <hr>
+    <main>
+        <h2>{% block page_title %}{% endblock %}</h2>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul>
+                {% for category, message in messages %}
+                    <li class="flash-{{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

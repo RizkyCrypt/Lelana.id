@@ -20,7 +20,7 @@ class Wisata(db.Model):
     tanggal_dibuat = db.Column(db.DateTime, default=datetime.utcnow)
 
     # Relasi ke Review: Satu wisata bisa punya banyak review
-    reviews = db.relationship('Review', backref='wisata_reviewed', lazy='dynamic')
+    reviews = db.relationship('Review', backref='wisata_reviewed', lazy='dynamic', cascade="all, delete-orphan")
 
     def __repr__(self):
         return f'<Wisata {self.nama}>'
