@@ -9,22 +9,25 @@
         .flash { background: #cee5f5; padding: 0.5em; border: 1px solid #aacbe2; margin-bottom: 1em; }
         .form-field { margin-bottom: 1em; }
         .error { color: red; font-size: 0.8em; }
+        nav a { text-decoration: none; color: #0066cc; }
+        nav a:hover { text-decoration: underline; }
+        hr { border: 0; border-top: 1px solid #ccc; margin: 1em 0; }
     </style>
 </head>
 <body>
-
     <header>
         <nav>
             <a href="{{ url_for('main.index') }}">Home</a> |
             <a href="{{ url_for('wisata.list_wisata') }}">Wisata</a> |
             <a href="{{ url_for('event.list_event') }}">Event</a> |
             <a href="{{ url_for('paket_wisata.list_paket') }}">Paket Wisata</a> |
+            <a href="{{ url_for('itinerari.list_itinerari') }}">Itinerari</a> |
+            <a href="{{ url_for('main.peta_wisata') }}">Lokasi Wisata</a> |
+            <a href="{{ url_for('admin.dashboard') }}">Admin Panel</a> |
             {% if current_user.is_authenticated %}
-                <!-- Tampilkan ini jika user sudah login -->
                 <a href="{{ url_for('main.profile') }}">Profil</a> |
                 <a href="{{ url_for('auth.logout') }}">Logout</a>
             {% else %}
-                <!-- Tampilkan ini jika user belum login -->
                 <a href="{{ url_for('auth.login') }}">Login</a> |
                 <a href="{{ url_for('auth.register') }}">Register</a>
             {% endif %}
@@ -43,7 +46,7 @@
 
         {% block content %}{% endblock %}
     </main>
-    <!-- JavaScript Leaflet.js -->
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>

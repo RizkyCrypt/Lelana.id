@@ -9,14 +9,12 @@
     <header>
         <h1>Lelana.id - Panel Admin</h1>
         <nav>
-            <ul>
-                <li><a href="{{ url_for('admin.dashboard') }}">Dashboard Utama</a></li>
-                <li><a href="{{ url_for('admin.manage_users') }}">Manajemen Pengguna</a></li>
-                <li><a href="{{ url_for('admin.manage_wisata') }}">Manajemen Wisata</a></li>
-                <li><a href="{{ url_for('admin.manage_event') }}">Manajemen Event</a></li>
-                <li><a href="{{ url_for('admin.manage_paket_wisata') }}">Manajemen Paket Wisata</a></li>
-                <li><a href="{{ url_for('main.index') }}">Kembali ke Situs Publik</a></li>
-            </ul>
+            <a href="{{ url_for('admin.dashboard') }}">Dashboard Utama</a> |
+            <a href="{{ url_for('admin.manage_users') }}">Manajemen Pengguna</a> |
+            <a href="{{ url_for('admin.manage_wisata') }}">Manajemen Wisata</a> |
+            <a href="{{ url_for('admin.manage_event') }}">Manajemen Event</a> |
+            <a href="{{ url_for('admin.manage_paket_wisata') }}">Manajemen Paket Wisata</a> |
+            <a href="{{ url_for('main.index') }}">Kembali ke Situs Publik</a>
         </nav>
     </header>
     <hr>
@@ -24,13 +22,11 @@
         <h2>{% block page_title %}{% endblock %}</h2>
         
         {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <ul>
-                {% for category, message in messages %}
-                    <li class="flash-{{ category }}">{{ message }}</li>
-                {% endfor %}
-                </ul>
-            {% endif %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
         {% endwith %}
 
         {% block content %}{% endblock %}
