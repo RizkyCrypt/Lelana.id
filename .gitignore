@@ -1,3 +1,4 @@
+documentation/
 migrations/
 __pycache__/
 .venv
@@ -11,4 +12,3 @@ tests/
 *.ini
 lelana.db*
 logs/
-routes.md
