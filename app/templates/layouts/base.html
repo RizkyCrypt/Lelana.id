@@ -24,30 +24,6 @@
 
 {% block head_styles %}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    
-    <style>
-    	.login-option-separator {
-		  display: flex;
-		  align-items: center;
-		  text-align: center;
-		}
-		
-		.login-option-separator::before,
-		.login-option-separator::after {
-		  content: '';
-		  flex: 1;
-		  border-bottom: 1px solid #000;
-		}
-		
-		.login-option-separator:not(:empty)::before {
-		  margin-right: .25em;
-		}
-		
-		.login-option-separator:not(:empty)::after {
-		  margin-left: .25em;
-		}
-    </style>
-    
 {% endblock %}
 
 {% block body_content %}
@@ -222,26 +198,5 @@
             }
         });
     </script>
-    
-{% block scripts %}
-    <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-    
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyDXmkoRRJsyDk3HMKPgBrSLhQhdPf1zPMI",
-      authDomain: "lelana-id-3733d.firebaseapp.com",
-      projectId: "lelana-id-3733d",
-      storageBucket: "lelana-id-3733d.firebasestorage.app",
-      messagingSenderId: "99699530829",
-      appId: "1:99699530829:web:f611fbaae3b5522d429004"
-    };
-    
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    </script>
-{% endblock %}
+    {% block scripts %}{% endblock %}
 {% endblock %}
