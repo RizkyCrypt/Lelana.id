@@ -32,18 +32,32 @@
     <header class="bg-white/80 dark:bg-dark/80 backdrop-blur-lg shadow-sm sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800">
         <nav class="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
             <div class="flex items-center justify-between">
-                <!-- Logo -->
-                <a href="{{ url_for('main.index') }}" class="text-xl sm:text-2xl font-bold text-primary-600 dark:text-primary-400"> Lelana.id </a>
-                <!-- Navigasi Desktop -->
-                <div class="hidden lg:flex items-center space-x-8">
-                    <a href="{{ url_for('wisata.list_wisata') }}" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Wisata</a>
-                    <a href="{{ url_for('event.list_event') }}" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Event</a>
-                    <a href="{{ url_for('paket_wisata.list_paket') }}" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Paket Wisata</a>
-                    <a href="{{ url_for('itinerari.list_itinerari') }}" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Itinerari</a>
-                    <a href="{{ url_for('chatbot.chat_page') }}" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Tanya Putri</a>
-                    <a href="{{ url_for('main.peta_wisata') }}" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Peta</a>
+                <!-- Left Side: Logo and Main Nav -->
+                <div class="flex items-center">
+                    <a href="{{ url_for('main.index') }}" class="text-xl sm:text-2xl font-bold text-primary-600 dark:text-primary-400 mr-10"> Lelana.id </a>
+                    <div class="hidden lg:flex items-center space-x-8">
+                        <a href="{{ url_for('wisata.list_wisata') }}" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Wisata</a>
+                        <a href="{{ url_for('event.list_event') }}" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Event</a>
+                        <a href="{{ url_for('paket_wisata.list_paket') }}" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Paket Wisata</a>
+                        <a href="{{ url_for('itinerari.list_itinerari') }}" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Itinerari</a>
+                        <a href="{{ url_for('chatbot.chat_page') }}" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Tanya Putri</a>
+                        <a href="{{ url_for('main.peta_wisata') }}" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Peta</a>
+                    </div>
                 </div>
-                <!-- Tombol Auth & Aksi Desktop -->
+
+                <!-- Center: Search Bar -->
+                <div class="hidden lg:flex flex-1 justify-center px-6">
+                    <form action="{{ url_for('main.search') }}" method="GET" class="w-full max-w-sm">
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                                <svg class="w-5 h-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg>
+                            </span>
+                            <input type="search" name="q" value="{{ request.args.get('q', '') }}" class="block w-full bg-gray-100 dark:bg-gray-800 border border-transparent rounded-lg py-2 pl-10 pr-4 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="Cari...">
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Right Side: Auth and Actions -->
                 <div class="hidden lg:flex items-center space-x-4">
                     {% if current_user.is_authenticated %}
                         {% if current_user.role == 'admin' %}
@@ -74,6 +88,12 @@
             </div>
             <!-- Menu Mobile -->
             <div x-show="sidebarOpen" @click.away="sidebarOpen = false" x-cloak class="lg:hidden mt-4 space-y-2">
+                <!-- Search Bar Mobile -->
+                <div class="px-4 pb-2">
+                    <form action="{{ url_for('main.search') }}" method="GET">
+                        <input type="search" name="q" value="{{ request.args.get('q', '') }}" class="block w-full bg-gray-100 dark:bg-gray-800 border border-transparent rounded-lg py-2 px-3 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="Cari...">
+                    </form>
+                </div>
                 <a href="{{ url_for('wisata.list_wisata') }}" class="block py-2 px-4 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">Wisata</a>
                 <a href="{{ url_for('event.list_event') }}" class="block py-2 px-4 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">Event</a>
                 <a href="{{ url_for('paket_wisata.list_paket') }}" class="block py-2 px-4 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">Paket Wisata</a>
